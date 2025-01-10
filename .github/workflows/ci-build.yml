@@ -8,6 +8,7 @@ on:
     types:
       - opened
       - synchronize
+      - closed
 
 defaults:
   run:
@@ -315,20 +316,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: [android, ios, linux, macos, windows]
     steps:
-      - name: Check for pull request
-        uses: 8BitJonny/gh-get-current-pr@2.2.0
-        id: pr-check
-        with:
-          sha: ${{ github.event.pull_request.head.sha }} 
-      
       - name: Fetch artifacts
-        if: ${{ always() && github.ref == 'refs/heads/main' && steps.pr-check.outputs.pr_found == 'false' }}
+        if: ${{ always() && github.ref == 'refs/heads/main' && ((github.event_name == 'pull_request' && github.event.pull_request.action == 'closed' && github.event.pull_request.merged == 'true') || github.event_name == 'push') }}
         uses: actions/download-artifact@v4.1.7
         with:
           path: artifacts/
 
       - name: Remove old release
-        if: ${{ always() && github.ref == 'refs/heads/main' && steps.pr-check.outputs.pr_found == 'false' }}
+        if: ${{ always() && github.ref == 'refs/heads/main' && ((github.event_name == 'pull_request' && github.event.pull_request.action == 'closed' && github.event.pull_request.merged == 'true') || github.event_name == 'push') }}
         uses: dev-drprasad/delete-tag-and-release@v0.2.1
         with:
           delete_release: true
@@ -337,7 +332,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Repackage binaries and allow GitHub to process removed release for few seconds
-        if: ${{ always() && github.ref == 'refs/heads/main' && steps.pr-check.outputs.pr_found == 'false' }}
+        if: ${{ always() && github.ref == 'refs/heads/main' && ((github.event_name == 'pull_request' && github.event.pull_request.action == 'closed' && github.event.pull_request.merged == 'true') || github.event_name == 'push') }}
         continue-on-error: true
         run: |
           cd artifacts/
@@ -350,7 +345,7 @@ jobs:
           sleep 20s
 
       - name: Upload new release
-        if: ${{ always() && github.ref == 'refs/heads/main' && steps.pr-check.outputs.pr_found == 'false' }}
+        if: ${{ always() && github.ref == 'refs/heads/main' && ((github.event_name == 'pull_request' && github.event.pull_request.action == 'closed' && github.event.pull_request.merged == 'true') || github.event_name == 'push') }}
         uses: softprops/action-gh-release@v0.1.15
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
