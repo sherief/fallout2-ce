@@ -1458,7 +1458,7 @@ static void showSplash()
     memcpy(palette + (255 * 3), palette, 3);
     memset(palette, 0, 3);
 
-    for (int i = 0, dataLen = width * height; i < dataLen; i++) {
+    for (int i = 0; i < width * height; i++) {
         if (data[i] == 0) {
             data[i] = 255;
         } else if (data[i] == 255) {
