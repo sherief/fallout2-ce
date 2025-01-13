@@ -26,6 +26,9 @@ else()
     add_executable(${EXECUTABLE_NAME} WIN32 MACOSX_BUNDLE)
 endif()
 
+# Git Info
+include("cmake/gitver.cmake")
+
 target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/actions.cc"
     "src/actions.h"
@@ -225,6 +228,8 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/text_object.h"
     "src/tile.cc"
     "src/tile.h"
+    "src/tile_hires_stencil.cc"
+    "src/tile_hires_stencil.h"
     "src/trait_defs.h"
     "src/trait.cc"
     "src/trait.h"
