@@ -94,7 +94,6 @@ jobs:
 
   ios:
     name: iOS
-
     runs-on: macos-14
 
     steps:
@@ -215,7 +214,6 @@ jobs:
 
   macos:
     name: macOS
-
     runs-on: macos-14
 
     steps:
