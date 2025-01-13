@@ -104,7 +104,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: build
-          key: ios-cmake-v2
+          key: ios-cmake-v3
 
       - name: Configure
         run: |
@@ -224,7 +224,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: build
-          key: macos-cmake-v4
+          key: macos-cmake-v5
 
       - name: Configure
         run: |
