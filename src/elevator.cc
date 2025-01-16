@@ -21,8 +21,8 @@
 #include "scripts.h"
 #include "sfall_config.h"
 #include "svga.h"
-#include "window_manager.h"
 #include "touch.h"
+#include "window_manager.h"
 
 namespace fallout {
 
