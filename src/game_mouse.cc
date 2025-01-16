@@ -1410,6 +1410,12 @@ void gameMouseSetMode(int mode)
         _combat_outline_off();
         break;
     }
+
+    if (mode == GAME_MOUSE_MODE_MOVE) {
+        touch_set_touchscreen_mode(true);
+    } else {
+        touch_set_touchscreen_mode(false);
+    }
 }
 
 // 0x44CB6C
