@@ -2980,6 +2980,7 @@ static int wmWorldMapFunc(int a1)
     }
 
     wmFadeIn();
+    touch_set_touchscreen_mode(false);
 
     wmMatchWorldPosToArea(wmGenData.worldPosX, wmGenData.worldPosY, &(wmGenData.currentAreaId));
 
