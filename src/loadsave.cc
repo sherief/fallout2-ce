@@ -59,7 +59,7 @@
 #include "window_manager.h"
 #include "word_wrap.h"
 #include "worldmap.h"
-#ifdef EMSCRIPTEN
+#if defined( __EMSCRIPTEN__ )
 #include "emscripten.h"
 #endif
 
@@ -1687,7 +1687,7 @@ static int lsgPerformSaveGame()
     snprintf(_gmpath, sizeof(_gmpath), "%s\\%s%.2d\\", "SAVEGAME", "SLOT", _slot_cursor + 1);
     MapDirErase(_gmpath, "BAK");
 
-#ifdef EMSCRIPTEN
+#if defined( __EMSCRIPTEN__ )
     EM_ASYNC_JS(void, do_save_idbfs, (), {
       await new Promise((resolve, reject) => FS.syncfs(err => err ? reject(err) : resolve()))
     })

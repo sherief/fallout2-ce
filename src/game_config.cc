@@ -8,7 +8,7 @@
 #include "main.h"
 #include "platform_compat.h"
 
-#ifdef EMSCRIPTEN
+#if defined( __EMSCRIPTEN__ )
 #include "emscripten.h"
 #endif
 
@@ -214,7 +214,7 @@ bool gameConfigSave()
         return false;
     }
 
-#ifdef EMSCRIPTEN
+#if defined( __EMSCRIPTEN__ )
     EM_ASYNC_JS(void, do_save_idbfs, (), {
       await new Promise((resolve, reject) => FS.syncfs(err => err ? reject(err) : resolve()))
     })
