@@ -49,6 +49,10 @@ jobs:
           sed -i 's/\/fallout2-ce-ems/\//' vite.config.ts
           npm run build
 
+      - name: Install rsync (required for the next step)
+        run: |
+          apt-get update && apt-get install -y rsync
+
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         if: github.ref == 'refs/heads/main'
