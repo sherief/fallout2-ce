@@ -25,11 +25,14 @@ jobs:
           emcmake cmake ../ -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain/Emscripten.cmake -DCMAKE_BUILD_TYPE=Release && emmake make VERBOSE=1 -j 4
           cd ..
 
-      - name: Checkout and build web interface
-        if: github.ref == 'refs/heads/master'
-        uses: actions/setup-node@v4
+      - name: Add node
+        if: github.ref == 'refs/heads/main'
+        uses: actions/setup-node@v2
         with:
-          node-version: 22
+          node-version: '22'
+
+      - name: Checkout and build web interface
+        if: github.ref == 'refs/heads/main'
         run: |
           git clone git@github.com:ololoken/fallout2-ce-ems.git fallout2-ce-ems
           cd fallout2-ce-ems
@@ -42,7 +45,7 @@ jobs:
 
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         with:
           branch: gh-pages-demo
           folder: fallout2-ce-ems/dist
