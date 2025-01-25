@@ -8,6 +8,10 @@
 #include "main.h"
 #include "platform_compat.h"
 
+#ifdef EMSCRIPTEN
+#include "emscripten.h"
+#endif
+
 namespace fallout {
 
 static void gameConfigResolvePath(const char* section, const char* key);
@@ -209,6 +213,12 @@ bool gameConfigSave()
     if (!configWrite(&gGameConfig, gGameConfigFilePath, false)) {
         return false;
     }
+
+#ifdef EMSCRIPTEN
+    EM_ASYNC_JS(void, do_save_idbfs, (), {
+      await new Promise((resolve, reject) => FS.syncfs(err => err ? reject(err) : resolve())
+    })
+#endif
 
     return true;
 }
