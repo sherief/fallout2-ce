@@ -60,7 +60,7 @@
 #include "word_wrap.h"
 #include "worldmap.h"
 #if defined(__EMSCRIPTEN__)
-#include "emscripten.h"
+#include <emscripten.h>
 #endif
 
 namespace fallout {
@@ -1537,6 +1537,14 @@ static int lsgWindowFree(int windowType)
     return 0;
 }
 
+#if defined(__EMSCRIPTEN__)
+// clang-format off
+EM_ASYNC_JS(void, do_save_idbfs_loadsave, (), {
+    await new Promise((resolve, reject) => FS.syncfs(err => err ? reject(err) : resolve()))
+});
+// clang-format on
+#endif
+
 // 0x47D88C
 static int lsgPerformSaveGame()
 {
@@ -1688,11 +1696,7 @@ static int lsgPerformSaveGame()
     MapDirErase(_gmpath, "BAK");
 
 #if defined(__EMSCRIPTEN__)
-    // clang-format off
-    EM_ASYNC_JS(void, do_save_idbfs_loadsave, (), {
-      await new Promise((resolve, reject) => FS.syncfs(err => err ? reject(err) : resolve()))
-    })
-    // clang-format on
+    do_save_idbfs_loadsave();
 #endif
 
     gLoadSaveMessageListItem.num = 140;
