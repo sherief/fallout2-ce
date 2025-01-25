@@ -1689,7 +1689,7 @@ static int lsgPerformSaveGame()
 
 #ifdef EMSCRIPTEN
     EM_ASYNC_JS(void, do_save_idbfs, (), {
-      await new Promise((resolve, reject) => FS.syncfs(err => err ? reject(err) : resolve())
+      await new Promise((resolve, reject) => FS.syncfs(err => err ? reject(err) : resolve()))
     })
 #endif
 
