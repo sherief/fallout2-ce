@@ -24,12 +24,25 @@ jobs:
           cd build
           emcmake cmake ../ -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain/Emscripten.cmake -DCMAKE_BUILD_TYPE=Release && emmake make VERBOSE=1 -j 4
           cd ..
-          cp build/fallout2-ce.js fallout2-ce-emscripten-module/
-          cp build/fallout2-ce.wasm fallout2-ce-emscripten-module/
+
+      - name: Checkout and build web interface
+        if: github.ref == 'refs/heads/master'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+        run: |
+          git clone git@github.com:ololoken/fallout2-ce-ems.git fallout2-ce-ems
+          cd fallout2-ce-ems
+          git checkout 46ac3be3da9d01ef204779073b1c1254fa037021
+          npm install
+          cp ../build/fallout2-ce.js src/assets/fallout2ce
+          cp ../build/fallout2-ce.wasm src/assets/fallout2ce
+          sed -i 's/\/fallout2-ce-ems/\//' vite.config.ts
+          npm run build
 
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         if: github.ref == 'refs/heads/master'
         with:
           branch: gh-pages-demo
-          folder: build
+          folder: fallout2-ce-ems/dist
