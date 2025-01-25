@@ -386,8 +386,8 @@ else()
                                             --use-port=sdl2_mixer \
                                             --use-port=zlib" )
 
-    set( CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -gsource-map")
-    set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -gsource-map")
+    set( CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g")
+    set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
 
 
     target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sASYNCIFY" )
