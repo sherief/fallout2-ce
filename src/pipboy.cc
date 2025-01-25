@@ -414,6 +414,7 @@ int pipboyOpen(int intent)
         return -1;
     }
 
+    touch_set_touchscreen_mode(true);
     mouseGetPositionInWindow(gPipboyWindow, &gPipboyPreviousMouseX, &gPipboyPreviousMouseY);
     gPipboyLastEventTimestamp = getTicks();
 
@@ -480,6 +481,7 @@ int pipboyOpen(int intent)
     }
 
     pipboyWindowFree();
+    touch_set_touchscreen_mode(false);
 
     return 0;
 }
