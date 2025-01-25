@@ -31,12 +31,18 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Checkout and build web interface
+      - name: Checkout web interface
+        if: github.ref == 'refs/heads/main'
+        uses: actions/checkout@v4
+        with:
+          repository: ololoken/fallout2-ce-ems
+          ref: 46ac3be3da9d01ef204779073b1c1254fa037021
+          path: fallout2-ce-ems
+
+      - name: Build web interface
         if: github.ref == 'refs/heads/main'
         run: |
-          git clone git@github.com:ololoken/fallout2-ce-ems.git fallout2-ce-ems
           cd fallout2-ce-ems
-          git checkout 46ac3be3da9d01ef204779073b1c1254fa037021
           npm install
           cp ../build/fallout2-ce.js src/assets/fallout2ce
           cp ../build/fallout2-ce.wasm src/assets/fallout2ce
