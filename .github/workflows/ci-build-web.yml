@@ -58,5 +58,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         if: github.ref == 'refs/heads/main'
         with:
-          branch: gh-pages-demo
+          branch: gh-pages
           folder: fallout2-ce-ems/dist
