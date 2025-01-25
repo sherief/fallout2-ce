@@ -1688,9 +1688,11 @@ static int lsgPerformSaveGame()
     MapDirErase(_gmpath, "BAK");
 
 #if defined(__EMSCRIPTEN__)
+    // clang-format off
     EM_ASYNC_JS(void, do_save_idbfs, (), {
       await new Promise((resolve, reject) => FS.syncfs(err => err ? reject(err) : resolve()))
     })
+    // clang-format on
 #endif
 
     gLoadSaveMessageListItem.num = 140;
