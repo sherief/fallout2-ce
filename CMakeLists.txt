@@ -368,12 +368,40 @@ endif()
 add_subdirectory("third_party/fpattern")
 target_link_libraries(${EXECUTABLE_NAME} fpattern::fpattern)
 
-if((NOT ${CMAKE_SYSTEM_NAME} MATCHES "Linux") AND (NOT ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD") AND (NOT ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD"))
-    add_subdirectory("third_party/zlib")
-    add_subdirectory("third_party/sdl2")
+if((NOT ${CMAKE_SYSTEM_NAME} MATCHES "Emscripten"))
+    if((NOT ${CMAKE_SYSTEM_NAME} MATCHES "Linux") AND (NOT ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD") AND (NOT ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD"))
+        add_subdirectory("third_party/zlib")
+        add_subdirectory("third_party/sdl2")
+    else()
+        find_package(ZLIB)
+        find_package(SDL2)
+    endif()
 else()
-    find_package(ZLIB)
-    find_package(SDL2)
+    set( CMAKE_C_FLAGS                      "${CMAKE_C_FLAGS} \
+                                            --use-port=sdl2 \
+                                            --use-port=sdl2_mixer \
+                                            --use-port=zlib" )
+    set( CMAKE_CXX_FLAGS                    "${CMAKE_CXX_FLAGS} \
+                                            --use-port=sdl2 \
+                                            --use-port=sdl2_mixer \
+                                            --use-port=zlib" )
+
+    set( CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -gsource-map")
+    set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -gsource-map")
+
+
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sASYNCIFY" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sASYNCIFY_STACK_SIZE=20480" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sENVIRONMENT=web" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sALLOW_MEMORY_GROWTH" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sNO_DISABLE_EXCEPTION_CATCHING" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-lidbfs.js" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sCASE_INSENSITIVE_FS" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sMODULARIZE" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sEXPORTED_RUNTIME_METHODS=callMain,addRunDependency,removeRunDependency" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sEXPORT_ALL" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sEXPORT_NAME=fallout2ce" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "$<$<CONFIG:DEBUG>:-gsource-map>" )
 endif()
 
 target_link_libraries(${EXECUTABLE_NAME} ${ZLIB_LIBRARIES})
