@@ -639,7 +639,8 @@ static int elevatorGetLevelFromKeyCode(int elevator, int keyCode)
             break;
         }
 
-        if (c == (char)(keyCode & 0xFF)) {//consider use std toupper
+        // consider use std toupper instead of & 0xFF
+        if (c == (char)(keyCode & 0xFF)) {
             return index + 1;
         }
     }
