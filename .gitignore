@@ -395,3 +395,6 @@ FodyWeavers.xsd
 # CMake
 /out
 /build
+
+# versioning header
+src/platform/git_version.h

@@ -26,6 +26,9 @@ else()
     add_executable(${EXECUTABLE_NAME} WIN32 MACOSX_BUNDLE)
 endif()
 
+# Git Info
+include("cmake/gitver.cmake")
+
 target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/actions.cc"
     "src/actions.h"
@@ -225,6 +228,8 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/text_object.h"
     "src/tile.cc"
     "src/tile.h"
+    "src/tile_hires_stencil.cc"
+    "src/tile_hires_stencil.h"
     "src/trait_defs.h"
     "src/trait.cc"
     "src/trait.h"
@@ -381,9 +386,12 @@ else()
                                             --use-port=sdl2_mixer \
                                             --use-port=zlib" )
 
-    set( CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -gsource-map")
-    set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -gsource-map")
 
+    set( CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g")
+    set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+
+    set( CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O1")
+    set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O1")
 
     target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sASYNCIFY" )
     target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sASYNCIFY_STACK_SIZE=20480" )
@@ -396,7 +404,7 @@ else()
     target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sEXPORTED_RUNTIME_METHODS=callMain,addRunDependency,removeRunDependency" )
     target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sEXPORT_ALL" )
     target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sEXPORT_NAME=fallout2ce" )
-    target_link_options( ${EXECUTABLE_NAME} PRIVATE "$<$<CONFIG:DEBUG>:-gsource-map>" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "$<$<CONFIG:DEBUG>:-g>" )
 endif()
 
 target_link_libraries(${EXECUTABLE_NAME} ${ZLIB_LIBRARIES})
