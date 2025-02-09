@@ -6,10 +6,10 @@ set(EXECUTABLE_NAME fallout2-ce)
 
 if(APPLE)
     if(IOS)
-        set(CMAKE_OSX_DEPLOYMENT_TARGET "11" CACHE STRING "")
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "12" CACHE STRING "")
         set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "")
     else()
-        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "")
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "")
         set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE STRING "")
     endif()
 endif()
@@ -25,6 +25,9 @@ if(ANDROID)
 else()
     add_executable(${EXECUTABLE_NAME} WIN32 MACOSX_BUNDLE)
 endif()
+
+# Git Info
+include("cmake/gitver.cmake")
 
 target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/actions.cc"
@@ -225,6 +228,8 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/text_object.h"
     "src/tile.cc"
     "src/tile.h"
+    "src/tile_hires_stencil.cc"
+    "src/tile_hires_stencil.h"
     "src/trait_defs.h"
     "src/trait.cc"
     "src/trait.h"
@@ -361,15 +366,44 @@ if(APPLE)
 endif()
 
 add_subdirectory("third_party/fpattern")
-target_link_libraries(${EXECUTABLE_NAME} ${FPATTERN_LIBRARY})
-target_include_directories(${EXECUTABLE_NAME} PRIVATE ${FPATTERN_INCLUDE_DIR})
+target_link_libraries(${EXECUTABLE_NAME} fpattern::fpattern)
 
-if((NOT ${CMAKE_SYSTEM_NAME} MATCHES "Linux") AND (NOT ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD") AND (NOT ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD"))
-    add_subdirectory("third_party/zlib")
-    add_subdirectory("third_party/sdl2")
+if((NOT ${CMAKE_SYSTEM_NAME} MATCHES "Emscripten"))
+    if((NOT ${CMAKE_SYSTEM_NAME} MATCHES "Linux") AND (NOT ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD") AND (NOT ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD"))
+        add_subdirectory("third_party/zlib")
+        add_subdirectory("third_party/sdl2")
+    else()
+        find_package(ZLIB)
+        find_package(SDL2)
+    endif()
 else()
-    find_package(ZLIB)
-    find_package(SDL2)
+    set( CMAKE_C_FLAGS                      "${CMAKE_C_FLAGS} \
+                                            --use-port=sdl2 \
+                                            --use-port=sdl2_mixer \
+                                            --use-port=zlib" )
+    set( CMAKE_CXX_FLAGS                    "${CMAKE_CXX_FLAGS} \
+                                            --use-port=sdl2 \
+                                            --use-port=sdl2_mixer \
+                                            --use-port=zlib" )
+
+    set( CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g")
+    set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+
+    set( CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O1")
+    set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O1")
+
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sASYNCIFY" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sASYNCIFY_STACK_SIZE=20480" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sENVIRONMENT=web" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sALLOW_MEMORY_GROWTH" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sNO_DISABLE_EXCEPTION_CATCHING" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-lidbfs.js" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sCASE_INSENSITIVE_FS" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sMODULARIZE" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sEXPORTED_RUNTIME_METHODS=callMain,addRunDependency,removeRunDependency" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sEXPORT_ALL" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "-sEXPORT_NAME=fallout2ce" )
+    target_link_options( ${EXECUTABLE_NAME} PRIVATE "$<$<CONFIG:DEBUG>:-g>" )
 endif()
 
 target_link_libraries(${EXECUTABLE_NAME} ${ZLIB_LIBRARIES})

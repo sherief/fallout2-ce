@@ -39,6 +39,7 @@
 #include "svga.h"
 #include "text_object.h"
 #include "tile.h"
+#include "tile_hires_stencil.h"
 #include "window_manager.h"
 #include "window_manager_private.h"
 #include "worldmap.h"
@@ -373,7 +374,7 @@ int mapSetElevation(int elevation)
     }
 
     if (elevation != gElevation) {
-        wmMapMarkMapEntranceState(gMapHeader.field_34, elevation, 1);
+        wmMapMarkMapEntranceState(gMapHeader.index, elevation, 1);
     }
 
     gElevation = elevation;
@@ -389,6 +390,8 @@ int mapSetElevation(int elevation)
     if (gameMouseWasVisible) {
         gameMouseObjectsShow();
     }
+
+    tile_hires_stencil_on_center_tile_or_elevation_change();
 
     return 0;
 }
@@ -596,7 +599,7 @@ char* _map_get_description_idx_(int map)
 // 0x4826B8
 int mapGetCurrentMap()
 {
-    return gMapHeader.field_34;
+    return gMapHeader.index;
 }
 
 // 0x4826C0
@@ -927,7 +930,7 @@ static int mapLoad(File* stream)
     lightSetAmbientIntensity(LIGHT_INTENSITY_MAX, false);
     objectSetLocation(gDude, gCenterTile, gElevation, nullptr);
     objectSetRotation(gDude, gEnteringRotation, nullptr);
-    gMapHeader.field_34 = wmMapMatchNameToIdx(gMapHeader.name);
+    gMapHeader.index = wmMapMatchNameToIdx(gMapHeader.name);
 
     if ((gMapHeader.flags & 1) == 0) {
         char path[COMPAT_MAX_PATH];
@@ -965,10 +968,10 @@ static int mapLoad(File* stream)
 
         Script* script;
         scriptGetScript(gMapSid, &script);
-        script->field_14 = gMapHeader.scriptIndex - 1;
+        script->index = gMapHeader.scriptIndex - 1;
         script->flags |= SCRIPT_FLAG_0x08;
         object->id = scriptsNewObjectId();
-        script->field_1C = object->id;
+        script->ownerId = object->id;
         script->owner = object;
         _scr_spatials_disable();
         scriptExecProc(gMapSid, SCRIPT_PROC_MAP_ENTER);
@@ -1025,8 +1028,8 @@ err:
         rc = -1;
     }
 
-    wmMapMarkVisited(gMapHeader.field_34);
-    wmMapMarkMapEntranceState(gMapHeader.field_34, gElevation, 1);
+    wmMapMarkVisited(gMapHeader.index);
+    wmMapMarkMapEntranceState(gMapHeader.index, gElevation, 1);
 
     if (wmCheckGameAreaEvents() != 0) {
         rc = -1;
@@ -1042,6 +1045,8 @@ err:
 
     // NOTE: Uninline.
     mapSetEnteringLocation(-1, -1, -1);
+
+    tile_hires_stencil_init();
 
     gameMovieFadeOut();
 
@@ -1203,7 +1208,7 @@ static int _map_age_dead_critters()
 int _map_target_load_area()
 {
     int city = -1;
-    if (wmMatchAreaContainingMapIdx(gMapHeader.field_34, &city) == -1) {
+    if (wmMatchAreaContainingMapIdx(gMapHeader.index, &city) == -1) {
         city = -1;
     }
     return city;
@@ -1254,12 +1259,15 @@ int mapHandleTransition()
         }
     } else {
         if (!isInCombat()) {
-            if (gMapTransition.map != gMapHeader.field_34 || gElevation == gMapTransition.elevation) {
+            if (gMapTransition.map != gMapHeader.index || gElevation == gMapTransition.elevation) {
+                // SFALL: Remove text floaters after moving to another map.
+                textObjectsReset();
+
                 mapLoadById(gMapTransition.map);
             }
 
             if (gMapTransition.tile != -1 && gMapTransition.tile != 0
-                && gMapHeader.field_34 != MAP_MODOC_BEDNBREAKFAST && gMapHeader.field_34 != MAP_THE_SQUAT_A
+                && gMapHeader.index != MAP_MODOC_BEDNBREAKFAST && gMapHeader.index != MAP_THE_SQUAT_A
                 && elevationIsValid(gMapTransition.elevation)) {
                 objectSetLocation(gDude, gMapTransition.tile, gMapTransition.elevation, nullptr);
                 mapSetElevation(gMapTransition.elevation);
@@ -1273,7 +1281,7 @@ int mapHandleTransition()
             memset(&gMapTransition, 0, sizeof(gMapTransition));
 
             int city;
-            wmMatchAreaContainingMapIdx(gMapHeader.field_34, &city);
+            wmMatchAreaContainingMapIdx(gMapHeader.index, &city);
             if (wmTeleportToArea(city) == -1) {
                 debugPrint("\nError: couldn't make jump on worldmap for map jump!");
             }
@@ -1520,6 +1528,8 @@ static void isoWindowRefreshRectGame(Rect* rect)
     _obj_render_pre_roof(&rectToUpdate, gElevation);
     tileRenderRoofsInRect(&rectToUpdate, gElevation);
     _obj_render_post_roof(&rectToUpdate, gElevation);
+
+    tile_hires_stencil_draw(&rectToUpdate, gIsoWindowBuffer, rectGetWidth(&gIsoWindowRect), rectGetHeight(&gIsoWindowRect));
 }
 
 // 0x483F44
@@ -1541,6 +1551,8 @@ static void isoWindowRefreshRectMapper(Rect* rect)
     _obj_render_pre_roof(&rectToUpdate, gElevation);
     tileRenderRoofsInRect(&rectToUpdate, gElevation);
     _obj_render_post_roof(&rectToUpdate, gElevation);
+
+    tile_hires_stencil_draw(&rectToUpdate, gIsoWindowBuffer, rectGetWidth(&gIsoWindowRect), rectGetHeight(&gIsoWindowRect));
 }
 
 // NOTE: Inlined.
@@ -1745,7 +1757,7 @@ static int mapHeaderWrite(MapHeader* ptr, File* stream)
     if (fileWriteInt32(stream, ptr->flags) == -1) return -1;
     if (fileWriteInt32(stream, ptr->darkness) == -1) return -1;
     if (fileWriteInt32(stream, ptr->globalVariablesCount) == -1) return -1;
-    if (fileWriteInt32(stream, ptr->field_34) == -1) return -1;
+    if (fileWriteInt32(stream, ptr->index) == -1) return -1;
     if (fileWriteUInt32(stream, ptr->lastVisitTime) == -1) return -1;
     if (fileWriteInt32List(stream, ptr->field_3C, 44) == -1) return -1;
 
@@ -1765,7 +1777,7 @@ static int mapHeaderRead(MapHeader* ptr, File* stream)
     if (fileReadInt32(stream, &(ptr->flags)) == -1) return -1;
     if (fileReadInt32(stream, &(ptr->darkness)) == -1) return -1;
     if (fileReadInt32(stream, &(ptr->globalVariablesCount)) == -1) return -1;
-    if (fileReadInt32(stream, &(ptr->field_34)) == -1) return -1;
+    if (fileReadInt32(stream, &(ptr->index)) == -1) return -1;
     if (fileReadUInt32(stream, &(ptr->lastVisitTime)) == -1) return -1;
     if (fileReadInt32List(stream, ptr->field_3C, 44) == -1) return -1;
 

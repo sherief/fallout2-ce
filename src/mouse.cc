@@ -409,11 +409,11 @@ void _mouse_info()
                     _mouse_simulate_input(gesture.x - prevx, gesture.y - prevy, MOUSE_STATE_RIGHT_BUTTON_DOWN);
                 }
             } else if (gesture.type == kPan) {
-                if (gesture.numberOfTouches == 1) {
+                if (!touch_get_pan_mode() && gesture.numberOfTouches == 1) {
                     _mouse_simulate_input(gesture.x - prevx, gesture.y - prevy, 0);
-                } else if (gesture.numberOfTouches == 2) {
-                    gMouseWheelX = (prevx - gesture.x) / 2;
-                    gMouseWheelY = (gesture.y - prevy) / 2;
+                } else if (touch_get_pan_mode() || gesture.numberOfTouches == 2) {
+                    gMouseWheelX = (prevx - gesture.x) / 8;
+                    gMouseWheelY = (gesture.y - prevy) / 8;
 
                     if (gMouseWheelX != 0 || gMouseWheelY != 0) {
                         gMouseEvent |= MOUSE_EVENT_WHEEL;
@@ -632,12 +632,12 @@ void mouseGetPosition(int* xPtr, int* yPtr)
 }
 
 // 0x4CAA04
-void _mouse_set_position(int a1, int a2)
+void _mouse_set_position(int x, int y)
 {
-    gMouseCursorX = a1 - _mouse_hotx;
-    gMouseCursorY = a2 - _mouse_hoty;
-    _raw_y = a2 - _mouse_hoty;
-    _raw_x = a1 - _mouse_hotx;
+    gMouseCursorX = x - _mouse_hotx;
+    gMouseCursorY = y - _mouse_hoty;
+    _raw_y = y - _mouse_hoty;
+    _raw_x = x - _mouse_hotx;
     _mouse_clip();
 }
 
@@ -700,7 +700,7 @@ void _mouse_get_raw_state(int* out_x, int* out_y, int* out_buttons)
 // 0x4CAC3C
 void mouseSetSensitivity(double value)
 {
-    if (value > 0 && value < 2.0) {
+    if (value >= 1.0 && value <= 2.5) {
         gMouseSensitivity = value;
     }
 }
