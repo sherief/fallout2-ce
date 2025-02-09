@@ -743,7 +743,7 @@ int tileFromScreenXY(int screenX, int screenY, int elevation, bool ignoreBounds)
     } else {
         x = (xTileOff + 1) / 64 - 1;
     }
-    
+
     int xOffset = xTileOff - (x * 64);
 
     int tY = x + y;
@@ -758,7 +758,7 @@ int tileFromScreenXY(int screenX, int screenY, int elevation, bool ignoreBounds)
     int yTile = _tile_y + tY;
 
     switch (_tile_mask[(32 * yOffset) + xOffset]) {
-        case 1:
+    case 1:
         yTile--;
         break;
     case 2:
@@ -784,8 +784,7 @@ int tileFromScreenXY(int screenX, int screenY, int elevation, bool ignoreBounds)
     if (ignoreBounds
         || (xPos >= 0 && xPos < gHexGridWidth && yTile >= 0 && yTile < gHexGridHeight)) {
         return (gHexGridWidth * yTile) + xPos;
-    }
-    else{
+    } else {
         return -1;
     }
 }
