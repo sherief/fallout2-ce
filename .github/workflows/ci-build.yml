@@ -336,6 +336,25 @@ jobs:
         continue-on-error: true
         run: |
           ls -R .
+          find .
+          cd artifacts/
+          for folder in *; do
+            if [[ -d "$folder" && "$folder" != "." ]]; then
+              echo "Processing $folder"
+              cd "$folder"
+              for file in *; do
+                if [ -f "$file" ]; then
+                  echo "Moving $file"
+                  mv "$file" "../$folder-$file"
+                fi
+              done
+              cd ..
+              rm -rf "$folder"
+            fi
+          done
+          ls -R .
+          find .
+          cd ../
           sleep 20s
 
       - name: Upload new release
