@@ -331,17 +331,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Repackage binaries and allow GitHub to process removed release for few seconds
+      - name: Allow GitHub to process removed release for few seconds
         if: ${{ always() && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
         continue-on-error: true
         run: |
-          cd artifacts/
-          for i in artifact-*; do
-            mv "$i"/* .
-            rm -rf "$i"
-          done
           ls -R .
-          cd ../
           sleep 20s
 
       - name: Upload new release
