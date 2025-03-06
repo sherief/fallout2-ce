@@ -424,6 +424,8 @@ void _mouse_info()
             prevx = gesture.x;
             prevy = gesture.y;
             break;
+        case kUnrecognized:
+            break;
         }
 
         return;
