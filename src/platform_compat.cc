@@ -15,7 +15,10 @@
 
 #ifdef _WIN32
 #ifdef _WIN64
+// clang-format off
+#include <windows.h>
 #include <timeapi.h>
+// clang-format on
 #else
 #include <mmsystem.h>
 #endif
