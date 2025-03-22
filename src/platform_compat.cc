@@ -18,6 +18,7 @@
 // clang-format off
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
+typedef unsigned int MMRESULT;
 #include <windows.h>
 #include <timeapi.h>
 // clang-format on
