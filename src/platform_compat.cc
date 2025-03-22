@@ -14,14 +14,12 @@
 #endif
 
 #ifdef _WIN32
-// clang-format off
 #include <windows.h>
 #ifdef _WIN64
 #include <timeapi.h>
 #else
 #include <mmsystem.h>
 #endif
-// clang-format on
 #else
 #include <chrono>
 #endif
