@@ -14,17 +14,14 @@
 #endif
 
 #ifdef _WIN32
+// clang-format off
+#include <windows.h>
 #ifdef _WIN64
 #include <timeapi.h>
 #else
-// clang-format off
-// #define WIN32_LEAN_AND_MEAN
-// #define NOMINMAX
-// typedef unsigned int MMRESULT;
-#include <windows.h>
 #include <mmsystem.h>
-// clang-format on
 #endif
+// clang-format on
 #else
 #include <chrono>
 #endif
