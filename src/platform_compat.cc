@@ -3,7 +3,7 @@
 #include <string.h>
 
 #ifdef _WIN32
-#include <windows.h>
+#include <mmsystem.h>
 #endif
 
 #ifdef _WIN32
