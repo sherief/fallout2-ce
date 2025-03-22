@@ -1,8 +1,8 @@
 #include "interface.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include <string.h>
-#include <algorithm>
 
 #include "animation.h"
 #include "art.h"

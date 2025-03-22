@@ -1,7 +1,7 @@
 #include "text_object.h"
 
-#include <string.h>
 #include <algorithm>
+#include <string.h>
 
 #include "debug.h"
 #include "draw.h"
