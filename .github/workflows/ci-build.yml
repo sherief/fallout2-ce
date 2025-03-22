@@ -300,13 +300,13 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build --preset windows-${{ matrix.arch }}-debug
+          cmake --build --preset windows-${{ matrix.arch }} --config RelWithDebInfo
 
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: fallout2-ce-windows-${{ matrix.arch }}
-          path:  out/build/windows-${{ matrix.arch }}/Debug/fallout2-ce.exe
+          path:  out/build/windows-${{ matrix.arch }}/RelWithDebInfo/fallout2-ce-${{ matrix.arch }}.exe
           retention-days: 7
 
 
