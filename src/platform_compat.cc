@@ -16,6 +16,8 @@
 #ifdef _WIN32
 #ifdef _WIN64
 // clang-format off
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include <windows.h>
 #include <timeapi.h>
 // clang-format on
