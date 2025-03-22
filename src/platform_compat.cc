@@ -14,7 +14,11 @@
 #endif
 
 #ifdef _WIN32
+#ifdef _WIN64
+#include <timeapi.h>
+#else
 #include <mmsystem.h>
+#endif
 #else
 #include <chrono>
 #endif
