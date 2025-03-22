@@ -15,15 +15,15 @@
 
 #ifdef _WIN32
 #ifdef _WIN64
-// clang-format off
-#define WIN32_LEAN_AND_MEAN
-#define NOMINMAX
-typedef unsigned int MMRESULT;
-#include <windows.h>
 #include <timeapi.h>
-// clang-format on
 #else
+// clang-format off
+// #define WIN32_LEAN_AND_MEAN
+// #define NOMINMAX
+// typedef unsigned int MMRESULT;
+#include <windows.h>
 #include <mmsystem.h>
+// clang-format on
 #endif
 #else
 #include <chrono>
