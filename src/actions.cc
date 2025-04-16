@@ -1486,13 +1486,16 @@ int actionUseSkill(Object* user, Object* target, int skill)
         }
     }
 
+    int walkDistance = 5;
+    configGetInt(&gSfallConfig, SFALL_CONFIG_MISC_KEY, SFALL_CONFIG_USE_WALK_DISTANCE, &walkDistance);
+
     if (isInCombat()) {
         reg_anim_begin(ANIMATION_REQUEST_RESERVED);
         animationRegisterMoveToObject(performer, target, performer->data.critter.combat.ap, 0);
     } else {
         reg_anim_begin(user == gDude ? ANIMATION_REQUEST_RESERVED : ANIMATION_REQUEST_UNRESERVED);
         if (target != gDude) {
-            if (objectGetDistanceBetween(performer, target) >= 0) {
+            if (objectGetDistanceBetween(performer, target) >= walkDistance) {
                 animationRegisterRunToObject(performer, target, -1, 0);
             } else {
                 animationRegisterMoveToObject(performer, target, -1, 0);
