@@ -1791,7 +1791,7 @@ int pathfinderFindPath(Object* object, int from, int to, unsigned char* rotation
         closedPathNodeListLength += 1;
 
         if (closedPathNodeListLength == PATH_NODE_CAPACITY) {
-            //Search path node capacity exhausted
+            // Search path node capacity exhausted
             return 0;
         }
 
