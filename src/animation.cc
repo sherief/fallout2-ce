@@ -304,7 +304,7 @@ static bool _anim_in_bk = false;
 // 0x530014
 static AnimationSad gAnimationSads[ANIMATION_SAD_LIST_CAPACITY];
 
-#define PATH_NODE_CAPACITY 2000
+#define PATH_NODE_CAPACITY 10000
 
 // 0x542FD4
 static PathNode gClosedPathNodeList[PATH_NODE_CAPACITY];
