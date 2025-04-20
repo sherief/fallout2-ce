@@ -2070,7 +2070,7 @@ bool _obj_portal_is_walk_thru(Object* obj)
 
     if (autoOpenDoors) {
         if (!isInCombat()) {
-            if (proto->scenery.type == 0) // Door
+            if (proto->scenery.type == SCENERY_TYPE_DOOR) // Door
             {
                 // Unlocked
                 if (proto->scenery.data.door.openFlags == 0) {
