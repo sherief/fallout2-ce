@@ -2072,8 +2072,8 @@ bool _obj_portal_is_walk_thru(Object* obj)
         if (!isInCombat()) {
             if (proto->scenery.type == SCENERY_TYPE_DOOR) // Door
             {
-                // Unlocked
-                if (proto->scenery.data.door.openFlags == 0) {
+                // Unlocked, and has no script ID
+                if ((proto->scenery.data.door.openFlags == 0) && (obj->sid == -1)){
                     return true;
                 }
             }
