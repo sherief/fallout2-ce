@@ -349,30 +349,35 @@ jobs:
 
       - name: Allow GitHub to process removed release for few seconds
         if: ${{ always() && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
-        continue-on-error: true
         run: |
-          ls -R .
+          ls -Rlah .
           find .
           cd artifacts/
           for folder in *; do
             if [[ -d "$folder" && "$folder" != "." ]]; then
               echo "Processing $folder"
-              cd "$folder"
+              mv "$folder" "$folder.dir"
+              cd "$folder.dir"
               for file in *; do
                 if [ -f "$file" ]; then
                   if [ -f "../$file" ]; then
                     echo "ERROR: Duplicate artifact file name $file"
                     exit 1
                   fi
+                  if [ -d "../$file" ]; then
+                    echo "ERROR: Duplicate artifact folder $file"
+                    exit 1
+                  fi
+
                   echo "Moving $file"
                   mv "$file" "../$file"
                 fi
               done
               cd ..
-              rm -rf "$folder"
+              rm -rf "$folder.dir"
             fi
           done
-          ls -R .
+          ls -Rlah .
           find .
           cd ../
           sleep 20s
