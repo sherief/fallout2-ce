@@ -80,11 +80,15 @@ jobs:
           cd os/android
           ./gradlew assembleDebug
 
+      - name: Change apk file name
+        run: |
+          mv os/android/app/build/outputs/apk/debug/app-debug.apk os/android/app/build/outputs/apk/debug/fallout2-ce.apk
+
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: fallout2-ce-debug.apk
-          path: os/android/app/build/outputs/apk/debug/app-debug.apk
+          path: os/android/app/build/outputs/apk/debug/fallout2-ce.apk
           retention-days: 7
 
   ios:
@@ -347,7 +351,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Allow GitHub to process removed release for few seconds
+      - name: Move unpacked artifacts to root folder
         if: ${{ always() && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
         run: |
           ls -Rlah .
@@ -380,6 +384,10 @@ jobs:
           ls -Rlah .
           find .
           cd ../
+
+      - name: Allow GitHub to process removed release for few seconds
+        if: ${{ always() && github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+        run: |
           sleep 20s
 
       - name: Upload new release
