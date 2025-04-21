@@ -344,8 +344,12 @@ jobs:
               cd "$folder"
               for file in *; do
                 if [ -f "$file" ]; then
+                  if [ -f "../$file" ]; then
+                    echo "ERROR: Duplicate artifact file name $file"
+                    exit 1
+                  fi
                   echo "Moving $file"
-                  mv "$file" "../$folder-$file"
+                  mv "$file" "../$file"
                 fi
               done
               cd ..
