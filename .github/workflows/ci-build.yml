@@ -80,11 +80,15 @@ jobs:
           cd os/android
           ./gradlew assembleDebug
 
+      - name: Change apk file name
+        run: |
+          mv os/android/app/build/outputs/apk/debug/app-debug.apk os/android/app/build/outputs/apk/debug/fallout2-ce.apk
+
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: fallout2-ce-debug.apk
-          path: os/android/app/build/outputs/apk/debug/app-debug.apk
+          path: os/android/app/build/outputs/apk/debug/fallout2-ce.apk
           retention-days: 7
 
   ios:
