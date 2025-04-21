@@ -40,6 +40,10 @@ jobs:
       - name: Clone
         uses: actions/checkout@v4
 
+      - name: Show clang-format version
+        run: |
+          clang-format --version
+
       - name: clang-format
         run: find src -type f -name \*.cc -o -name \*.h | xargs clang-format --dry-run --Werror
 
