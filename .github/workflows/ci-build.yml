@@ -165,11 +165,15 @@ jobs:
         run: |
           cmake --build --preset linux-${{ matrix.arch }}-debug
 
+      - name: Change executable file name
+        run: |
+          mv out/build/linux-${{ matrix.arch }}-debug/fallout2-ce out/build/linux-${{ matrix.arch }}-debug/fallout2-ce-linux-${{ matrix.arch }}
+
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: fallout2-ce-linux-${{ matrix.arch }}
-          path:  out/build/linux-${{ matrix.arch }}-debug/fallout2-ce
+          path:  out/build/linux-${{ matrix.arch }}-debug/fallout2-ce-linux-${{ matrix.arch }}
           retention-days: 7
 
   linux-armhf:
@@ -201,11 +205,15 @@ jobs:
       - name: Build
         run: cmake --build build
 
+      - name: Change executable file name
+        run: |
+          mv build/fallout2-ce build/fallout2-ce-linux-armhf
+
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: fallout2-ce-linux-armhf
-          path:  build/fallout2-ce
+          path:  build/fallout2-ce-linux-armhf
           retention-days: 7
 
   linux-arm64:
@@ -228,11 +236,15 @@ jobs:
       - name: Build
         run: cmake --build build
 
+      - name: Change executable file name
+        run: |
+          mv build/fallout2-ce build/fallout2-ce-linux-arm64
+
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: fallout2-ce-linux-arm64
-          path:  build/fallout2-ce
+          path:  build/fallout2-ce-linux-arm64
           retention-days: 7
 
   macos:
@@ -302,11 +314,15 @@ jobs:
         run: |
           cmake --build --preset windows-${{ matrix.arch }}-release
 
+      - name: Change executable file name
+        run: |
+          mv out/build/windows-${{ matrix.arch }}/RelWithDebInfo/fallout2-ce.exe out/build/windows-${{ matrix.arch }}/RelWithDebInfo/fallout2-ce-${{ matrix.arch }}.exe
+
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: fallout2-ce-windows-${{ matrix.arch }}
-          path:  out/build/windows-${{ matrix.arch }}/RelWithDebInfo/fallout2-ce.exe
+          path:  out/build/windows-${{ matrix.arch }}/RelWithDebInfo/fallout2-ce-${{ matrix.arch }}.exe
           retention-days: 7
 
 
@@ -344,8 +360,12 @@ jobs:
               cd "$folder"
               for file in *; do
                 if [ -f "$file" ]; then
+                  if [ -f "../$file" ]; then
+                    echo "ERROR: Duplicate artifact file name $file"
+                    exit 1
+                  fi
                   echo "Moving $file"
-                  mv "$file" "../$folder-$file"
+                  mv "$file" "../$file"
                 fi
               done
               cd ..
