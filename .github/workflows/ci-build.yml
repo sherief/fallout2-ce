@@ -45,7 +45,7 @@ jobs:
           clang-format --version
 
       - name: clang-format
-        run: find src -type f -name \*.cc -o -name \*.h | xargs clang-format --dry-run --Werror
+        run: find src -type f \( -name \*.cc -o -name \*.h \)| xargs clang-format --dry-run --Werror
 
   android:
     name: Android
