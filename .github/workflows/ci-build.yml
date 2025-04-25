@@ -40,8 +40,10 @@ jobs:
       - name: Check labels
         id: label-check
         run: |
-          echo "Checking labels on PR..."
+          echo "Showing PR labels..."
           gh pr view ${{ github.event.pull_request.number }} --repo "${{ github.repository }}" --json labels
+          gh pr view ${{ github.event.pull_request.number }} --repo "${{ github.repository }}" --json labels --jq '.labels[].name'
+          echo "Checking labels on PR..."
           if gh pr view ${{ github.event.pull_request.number }} --repo "${{ github.repository }}" --json labels --jq '.labels[].name' | grep -q "skip-formatting"; then
             echo "skip-formatting label found — skipping job."
             exit 0
