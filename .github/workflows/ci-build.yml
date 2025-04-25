@@ -55,7 +55,9 @@ jobs:
           fi
           echo "skip-formatting label not found — continuing job."
 
-          find src -type f \( -name \*.cc -o -name \*.h \)| xargs clang-format --dry-run --Werror
+          find src -type f \( -name \*.cc -o -name \*.h \) | xargs clang-format --dry-run --Werror
+
+          echo "Code is formatted correctly"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
