@@ -37,6 +37,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check labels
+        id: label-check
+        run: |
+          echo "Checking labels on PR..."
+          if gh pr view ${{ github.event.pull_request.number }} --json labels --jq '.labels[].name' | grep -q "skip-formatting"; then
+            echo "skip-formatting label found — skipping job."
+            exit 0
+          fi
+          echo "skip-formatting label not found — continuing job."
+
       - name: Clone
         uses: actions/checkout@v4
 
