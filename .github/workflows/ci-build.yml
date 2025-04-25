@@ -47,7 +47,7 @@ jobs:
           fi
           echo "skip-formatting label not found — continuing job."
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Clone
         uses: actions/checkout@v4
