@@ -41,6 +41,7 @@ jobs:
         id: label-check
         run: |
           echo "Checking labels on PR..."
+          gh pr view ${{ github.event.pull_request.number }} --repo "${{ github.repository }}" --json labels
           if gh pr view ${{ github.event.pull_request.number }} --repo "${{ github.repository }}" --json labels --jq '.labels[].name' | grep -q "skip-formatting"; then
             echo "skip-formatting label found — skipping job."
             exit 0
