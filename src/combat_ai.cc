@@ -2733,7 +2733,7 @@ static int _ai_try_attack(Object* attacker, Object* defender)
             // out of ammo
             int roundsLoaded = 0;
             if (aiHaveAmmo(attacker, weapon, &ammo)) {
-                for (;;) {
+                while (aiHaveAmmo(attacker, weapon, &ammo)) {
                     int remainingAmmoQuantity = weaponReload(weapon, ammo);
                     if (remainingAmmoQuantity == 0 && ammo != nullptr) {
                         _obj_destroy(ammo);
