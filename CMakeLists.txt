@@ -28,6 +28,12 @@ else()
     add_executable(${EXECUTABLE_NAME} WIN32 MACOSX_BUNDLE)
 endif()
 
+if(WIN32)
+    set_target_properties(${EXECUTABLE_NAME} PROPERTIES
+         MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+    )
+endif()
+
 # Git Info
 include("cmake/gitver.cmake")
 
@@ -322,6 +328,7 @@ if(WIN32)
         "os/windows/fallout2-ce.rc"
     )
 endif()
+
 
 if(APPLE)
     if(IOS)
