@@ -305,12 +305,14 @@ if(WIN32)
         _CRT_NONSTDC_NO_WARNINGS
         NOMINMAX
         WIN32_LEAN_AND_MEAN
+        _STATIC_CPPLIB
     )
 endif()
 
 if(WIN32)
     target_link_libraries(${EXECUTABLE_NAME}
         winmm
+        libcpmt
     )
 endif()
 
