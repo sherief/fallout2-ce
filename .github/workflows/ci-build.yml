@@ -45,7 +45,21 @@ jobs:
           clang-format --version
 
       - name: clang-format
-        run: find src -type f -name \*.cc -o -name \*.h | xargs clang-format --dry-run --Werror
+        run: |
+          echo "Showing PR labels..."
+          gh pr view ${{ github.event.pull_request.number }} --repo "${{ github.repository }}" --json labels
+          echo "Checking labels on PR..."
+          if gh pr view ${{ github.event.pull_request.number }} --repo "${{ github.repository }}" --json labels --jq '.labels[].name' | grep -q "skip-formatting"; then
+            echo "skip-formatting label found — skipping job."
+            exit 0
+          fi
+          echo "skip-formatting label not found — continuing job."
+
+          find src -type f \( -name \*.cc -o -name \*.h \) | xargs clang-format --dry-run --Werror
+
+          echo "Code is formatted correctly"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   android:
     name: Android
