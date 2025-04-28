@@ -4136,9 +4136,6 @@ int _gdCustomSelect(int a1)
         windowDestroy(win);
         return -1;
     }
-    
-    buttonSetCallbacks(btn1, _gsound_red_butt_press, _gsound_red_butt_release);
-    buttonSetCallbacks(btn2, _gsound_red_butt_press, _gsound_red_butt_release);
 
     
     fontSetCurrent(103);
@@ -4183,8 +4180,10 @@ int _gdCustomSelect(int a1)
                 STRUCT_5189E4* ptr = &(_custom_settings[a1][value]);
                 _custom_current_selected[a1] = value;
                 _gdCustomUpdateSetting(a1, ptr->value);
+                soundPlayFile("ib1p1xx1");
                 done = true;
             } else if (keyCode == KEY_ESCAPE) {
+                soundPlayFile("ib1p1xx1");
                 done = true;
             } else if (keyCode == -2) {
                 if ((mouseGetEvent() & MOUSE_EVENT_LEFT_BUTTON_UP) != 0) {
