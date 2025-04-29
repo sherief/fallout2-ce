@@ -971,6 +971,7 @@ int _gdialogExitFromScript()
 
     // CE: Fix Barter button.
     gameDialogRedButtonsExit();
+    gameDialogLittleRedButtonsExit();
 
     fontSetCurrent(_oldFont);
 
