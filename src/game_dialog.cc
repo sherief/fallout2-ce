@@ -4131,11 +4131,17 @@ int _gdCustomSelect(int a1)
         windowDestroy(win);
         return -1;
     }
+    if (btn1 != -1) {
+        buttonSetCallbacks(btn1, _gsound_red_butt_press, _gsound_red_butt_release);
+    }
 
     int btn2 = buttonCreate(win, 176, 163, _littleRedButtonNormalFrmImage.getWidth(), _littleRedButtonNormalFrmImage.getHeight(), -1, -1, -1, KEY_ESCAPE, _littleRedButtonNormalFrmImage.getData(), _littleRedButtonPressedFrmImage.getData(), nullptr, BUTTON_FLAG_TRANSPARENT);
     if (btn2 == -1) {
         windowDestroy(win);
         return -1;
+    }
+    if (btn2 != -1) {
+        buttonSetCallbacks(btn2, _gsound_red_butt_press, _gsound_red_butt_release);
     }
 
     
@@ -4177,14 +4183,15 @@ int _gdCustomSelect(int a1)
                 break;
             }
 
-            if (keyCode == KEY_RETURN) {
+            if (keyCode == KEY_RETURN || keyCode == 500) {
                 STRUCT_5189E4* ptr = &(_custom_settings[a1][value]);
                 _custom_current_selected[a1] = value;
                 _gdCustomUpdateSetting(a1, ptr->value);
-                soundPlayFile("ib1p1xx1");
+                if (keyCode != 500){
+                    soundPlayFile("ib1p1xx1");
+                }
                 done = true;
             } else if (keyCode == KEY_ESCAPE) {
-                soundPlayFile("ib1p1xx1");
                 done = true;
             } else if (keyCode == -2) {
                 if ((mouseGetEvent() & MOUSE_EVENT_LEFT_BUTTON_UP) != 0) {
