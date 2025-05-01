@@ -5641,8 +5641,8 @@ static int inventoryQuantitySelect(int inventoryWindowType, Object* item, int ma
 
         if (keyCode == KEY_RETURN || keyCode == 500) {
             if (value >= min && value <= max) {
-                if (keyCode != 500) {
-                    if (inventoryWindowType != INVENTORY_WINDOW_TYPE_SET_TIMER || value % 10 == 0) {
+                if (inventoryWindowType != INVENTORY_WINDOW_TYPE_SET_TIMER || value % 10 == 0) {
+                    if (keyCode != 500) {
                         soundPlayFile("ib1p1xx1");
                     }
                 }
