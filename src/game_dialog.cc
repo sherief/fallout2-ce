@@ -4126,7 +4126,7 @@ int _gdCustomSelect(int a1)
 
     backgroundFrmImage.unlock();
 
-    int btn1 = buttonCreate(win, 70, 164, _littleRedButtonNormalFrmImage.getWidth(), _littleRedButtonNormalFrmImage.getHeight(), -1, -1, -1, KEY_RETURN, _littleRedButtonNormalFrmImage.getData(), _littleRedButtonPressedFrmImage.getData(), nullptr, BUTTON_FLAG_TRANSPARENT);
+    int btn1 = buttonCreate(win, 70, 164, _littleRedButtonNormalFrmImage.getWidth(), _littleRedButtonNormalFrmImage.getHeight(), -1, -1, -1, 500, _littleRedButtonNormalFrmImage.getData(), _littleRedButtonPressedFrmImage.getData(), nullptr, BUTTON_FLAG_TRANSPARENT);
     if (btn1 == -1) {
         windowDestroy(win);
         return -1;
