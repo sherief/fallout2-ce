@@ -61,6 +61,10 @@ jobs:
         env:
           SITE_BASE:  ${{ steps.set-path.outputs.SITE_BASE }}
 
+      - name: Install rsync (required for the next step)
+        run: |
+          apt-get update && apt-get install -y rsync
+
       - name: Deploy PR preview or main site
         uses: JamesIves/github-pages-deploy-action@v4
         with:
