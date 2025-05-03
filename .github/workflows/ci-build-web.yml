@@ -61,14 +61,13 @@ jobs:
         env:
           SITE_BASE:  ${{ steps.set-path.outputs.SITE_BASE }}
 
-      - name: Deploy to gh-pages PR folder
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Deploy PR preview or main site
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./fallout2-ce-ems/dist
-          destination_dir:  ${{ steps.set-path.outputs.DEST_DIR }}
-          keep_files: true  # Important! Keep other PR folders
-          publish_branch: gh-pages
+          branch: gh-pages
+          folder: fallout2-ce-ems/dist
+          target-folder: ${{ steps.set-path.outputs.DEST_DIR }}
+          clean: false
 
       - name: Comment preview URL on PR
         if: github.event_name == 'pull_request'
