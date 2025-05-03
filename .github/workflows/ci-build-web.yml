@@ -48,6 +48,8 @@ jobs:
             echo "DEST_DIR=." >> $GITHUB_OUTPUT
             echo "SITE_BASE=/fallout2-ce/" >> $GITHUB_OUTPUT
           fi
+          echo ===============================
+          cat $GITHUB_OUTPUT
 
       - name: Build web interface
         run: |
