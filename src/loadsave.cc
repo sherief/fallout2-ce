@@ -2249,9 +2249,6 @@ static int _GetSlotList()
 
 static void _ShowSlotList(int windowType)
 {
-// asdasd
-
-
     // Clear display area
     bufferFill(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * 87 + 55, 230, 353, LS_WINDOW_WIDTH, gLoadSaveWindowBuffer[LS_WINDOW_WIDTH * 86 + 55] & 0xFF);
 
@@ -2296,18 +2293,14 @@ static void _ShowSlotList(int windowType)
 
     // Pagination navigation
     if (saveLoadTotalSlots > 10) {
-        if (_currentSlotPage == 0) {
-            fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 95, "BACK", LS_WINDOW_WIDTH, LS_WINDOW_WIDTH, _colorTable[8804]);
-        }
-        if (_currentSlotPage > 0) {
-            fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 95, "BACK", LS_WINDOW_WIDTH, LS_WINDOW_WIDTH, _colorTable[992]);
-        }
-        if (_currentSlotPage < saveLoadPages - 1) {
-            fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 210, "MORE", LS_WINDOW_WIDTH, LS_WINDOW_WIDTH, _colorTable[992]);
-        }
-        if (_currentSlotPage == saveLoadPages - 1) {
-            fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 210, "MORE", LS_WINDOW_WIDTH, LS_WINDOW_WIDTH, _colorTable[8804]);
-        }
+        int activeColor = _colorTable[992];
+        int inactiveColor = _colorTable[8804];
+
+        int backButtonColor = _currentSlotPage > 0 ? activeColor : inactiveColor;
+        fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 95, "BACK", LS_WINDOW_WIDTH, LS_WINDOW_WIDTH, backButtonColor);
+
+        int moreButtonColor = _currentSlotPage < saveLoadPages - 1 ? activeColor : inactiveColor;
+        fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 210, "MORE", LS_WINDOW_WIDTH, LS_WINDOW_WIDTH, moreButtonColor);
     }
 }
 
