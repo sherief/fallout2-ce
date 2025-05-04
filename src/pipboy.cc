@@ -298,7 +298,7 @@ MessageListItem gPipboyMessageListItem;
 // pipboy.msg
 //
 // 0x664348
-MessageList gPipboyMessageList = {0, nullptr};
+MessageList gPipboyMessageList = { 0, nullptr };
 
 // 0x664350
 STRUCT_664350 _sortlist[24];
