@@ -16,8 +16,6 @@ void pipboyReset();
 int pipboySave(File* stream);
 int pipboyLoad(File* stream);
 
-extern MessageList gPipboyMessageList;
-
 } // namespace fallout
 
 #endif /* PIPBOY_H */
