@@ -43,8 +43,8 @@ jobs:
         if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
         uses: actions/checkout@v4
         with:
-          repository: ololoken/fallout2-ce-ems
-          ref: 0764f9fdd0abf27bd9b0d3997ca0a8e61f380058
+          repository: fallout2-ce/fallout2-ce-ems
+          # ref: 0764f9fdd0abf27bd9b0d3997ca0a8e61f380058
           path: fallout2-ce-ems
 
       - name: Set deployment path
