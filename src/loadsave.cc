@@ -2296,11 +2296,29 @@ static void _ShowSlotList(int windowType)
         int activeColor = _colorTable[992];
         int inactiveColor = _colorTable[8804];
 
-        int backButtonColor = _currentSlotPage > 0 ? activeColor : inactiveColor;
-        fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 95, "BACK", LS_WINDOW_WIDTH, LS_WINDOW_WIDTH, backButtonColor);
-
-        int moreButtonColor = _currentSlotPage < saveLoadPages - 1 ? activeColor : inactiveColor;
-        fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 210, "MORE", LS_WINDOW_WIDTH, LS_WINDOW_WIDTH, moreButtonColor);
+        {
+            MessageListItem messageListItemBack {
+                .num = 654, // Back
+            };
+            messageListGetItem(&gProtoMessageList, &messageListItemBack);
+            fontDrawText(
+                gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 95,
+                messageListItemBack.text,
+                LS_WINDOW_WIDTH,
+                LS_WINDOW_WIDTH,
+                _currentSlotPage > 0 ? activeColor : inactiveColor);
+        }
+        {
+            MessageListItem messageListItemMore {
+                .num = 652, // More
+            };
+            messageListGetItem(&gProtoMessageList, &messageListItemMore);
+            fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 210,
+                messageListItemMore.text,
+                LS_WINDOW_WIDTH,
+                LS_WINDOW_WIDTH,
+                _currentSlotPage < saveLoadPages - 1 ? activeColor : inactiveColor);
+        }
     }
 }
 
