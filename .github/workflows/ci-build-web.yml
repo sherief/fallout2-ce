@@ -61,6 +61,7 @@ jobs:
           npm install
           cp ../build/fallout2-ce.js src/assets/fallout2ce
           cp ../build/fallout2-ce.wasm src/assets/fallout2ce
+          sed -i 's/Starting wasm module/Starting wasm module ${{github.event.pull_request.head.sha || github.sha }}/' src/pages/Launcher.tsx
           npm run build
         env:
           SITE_BASE:  ${{ steps.set-path.outputs.SITE_BASE }}
