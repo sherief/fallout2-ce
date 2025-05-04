@@ -23,10 +23,10 @@ jobs:
           cd emsdk
           ./emsdk install 4.0.4
           ./emsdk activate 4.0.4
-          echo "source $(pwd)/emsdk_env.sh" >> $GITHUB_ENV
 
       - name: Build fallout2 wasm module
         run: |
+          source emsdk/emsdk_env.sh
           git config --global --add safe.directory "*"
           mkdir -p build
           cd build
