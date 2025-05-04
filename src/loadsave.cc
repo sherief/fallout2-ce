@@ -2297,9 +2297,9 @@ static void _ShowSlotList(int windowType)
         int inactiveColor = _colorTable[8804];
 
         {
-            MessageListItem messageListItemBack {
-                .num = 654, // Back
-            };
+            MessageListItem messageListItemBack;
+            messageListItemBack.num = 654; // Back
+
             messageListGetItem(&gProtoMessageList, &messageListItemBack);
             fontDrawText(
                 gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 95,
@@ -2309,9 +2309,8 @@ static void _ShowSlotList(int windowType)
                 _currentSlotPage > 0 ? activeColor : inactiveColor);
         }
         {
-            MessageListItem messageListItemMore {
-                .num = 652, // More
-            };
+            MessageListItem messageListItemMore;
+            messageListItemMore.num = 652; // More
             messageListGetItem(&gProtoMessageList, &messageListItemMore);
             fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 210,
                 messageListItemMore.text,
