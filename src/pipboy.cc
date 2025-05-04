@@ -488,7 +488,8 @@ int pipboyOpen(int intent)
     return 0;
 }
 
-int pipboyMessageListInit() {
+int pipboyMessageListInit()
+{
     if (!messageListInit(&gPipboyMessageList)) {
         return -1;
     }
