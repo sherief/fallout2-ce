@@ -359,6 +359,8 @@ void _InitLoadSave()
     if (quickSaveSlots > 0 && quickSaveSlots <= saveLoadTotalSlots) {
         autoQuickSaveSlots = true;
     }
+
+    pipboyMessageListInit();
 }
 
 // 0x47B85C

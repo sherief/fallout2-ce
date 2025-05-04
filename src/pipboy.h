@@ -18,6 +18,7 @@ int pipboySave(File* stream);
 int pipboyLoad(File* stream);
 
 extern MessageList gPipboyMessageList;
+int pipboyMessageListInit();
 
 } // namespace fallout
 
