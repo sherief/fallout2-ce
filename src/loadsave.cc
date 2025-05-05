@@ -359,6 +359,8 @@ void _InitLoadSave()
     if (quickSaveSlots > 0 && quickSaveSlots <= saveLoadTotalSlots) {
         autoQuickSaveSlots = true;
     }
+
+    pipboyMessageListInit();
 }
 
 // 0x47B85C
@@ -1428,8 +1430,6 @@ int lsgLoadGame(int mode)
                 _dbleclkcntr = 24;
                 doubleClickSlot = -1;
             }
-
-            delay_ms(1000 / 24 - (getTicks() - time));
         }
 
         if (rc == 1) {
@@ -2296,21 +2296,27 @@ static void _ShowSlotList(int windowType)
         int activeColor = _colorTable[992];
         int inactiveColor = _colorTable[8804];
 
-        // We could use messages (200 & 201) from PIPBOY.msg
-        // but it is not initialized at this moment.
-
-        fontDrawText(
-            gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 95,
-            "BACK",
-            LS_WINDOW_WIDTH,
-            LS_WINDOW_WIDTH,
-            _currentSlotPage > 0 ? activeColor : inactiveColor);
-
-        fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 210,
-            "MORE",
-            LS_WINDOW_WIDTH,
-            LS_WINDOW_WIDTH,
-            _currentSlotPage < saveLoadPages - 1 ? activeColor : inactiveColor);
+        {
+            MessageListItem messageListItemBack;
+            messageListItemBack.num = 201; // Back
+            messageListGetItem(&gPipboyMessageList, &messageListItemBack);
+            fontDrawText(
+                gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 95,
+                messageListItemBack.text,
+                LS_WINDOW_WIDTH,
+                LS_WINDOW_WIDTH,
+                _currentSlotPage > 0 ? activeColor : inactiveColor);
+        }
+        {
+            MessageListItem messageListItemMore;
+            messageListItemMore.num = 200; // More
+            messageListGetItem(&gPipboyMessageList, &messageListItemMore);
+            fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 210,
+                messageListItemMore.text,
+                LS_WINDOW_WIDTH,
+                LS_WINDOW_WIDTH,
+                _currentSlotPage < saveLoadPages - 1 ? activeColor : inactiveColor);
+        }
     }
 }
 
