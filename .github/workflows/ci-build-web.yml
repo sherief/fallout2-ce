@@ -44,7 +44,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: fallout2-ce/fallout2-ce-ems
-          # ref: 0764f9fdd0abf27bd9b0d3997ca0a8e61f380058
           path: fallout2-ce-ems
 
       - name: Set deployment path
@@ -68,7 +67,8 @@ jobs:
           npm install
           cp ../build/fallout2-ce.js src/assets/fallout2ce
           cp ../build/fallout2-ce.wasm src/assets/fallout2ce
-          sed -i 's/Starting wasm module/Starting wasm module ${{github.event.pull_request.head.sha || github.sha }}/' src/pages/Launcher.tsx
+          F2_WEB_INFO=Web=$(git rev-parse HEAD)
+          F2_GAME_VERSION=Game=${{github.event.pull_request.head.sha || github.sha }}
           npm run build
         env:
           SITE_BASE:  ${{ steps.set-path.outputs.SITE_BASE }}
