@@ -74,7 +74,7 @@ static const int gMaximumBloodDeathAnimations[DAMAGE_TYPE_COUNT] = {
 };
 
 // Note: some of these are callbacks that always take two Object*, but may not use them.
-// ignores parameters are marked with underscores.
+// Ignored parameters are marked with underscores.
 static int actionKnockdown(Object* obj, int* anim, int maxDistance, int rotation, int delay);
 static int _action_blood(Object* obj, int anim, int delay);
 static int _pick_death(Object* attacker, Object* defender, Object* weapon, int damage, int attackerAnimation, bool hitFromFront);
