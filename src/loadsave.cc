@@ -2305,7 +2305,10 @@ static void _ShowSlotList(int windowType)
         {
             MessageListItem messageListItemBack;
             messageListItemBack.num = 201; // Back
-            messageListGetItem(&gPipboyMessageList, &messageListItemBack);
+            if (!messageListGetItem(&gPipboyMessageList, &messageListItemBack)){
+                debugPrint("Error: Couldn't find LoadSave Message!");
+                messageListItemBack.text = "BACK";
+            }
             fontDrawText(
                 gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 95,
                 messageListItemBack.text,
@@ -2316,7 +2319,10 @@ static void _ShowSlotList(int windowType)
         {
             MessageListItem messageListItemMore;
             messageListItemMore.num = 200; // More
-            messageListGetItem(&gPipboyMessageList, &messageListItemMore);
+            if (!messageListGetItem(&gPipboyMessageList, &messageListItemMore)){
+                debugPrint("Error: Couldn't find LoadSave Message!");
+                messageListItemMore.text = "MORE";
+            }
             fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * (y + 0) + 210,
                 messageListItemMore.text,
                 LS_WINDOW_WIDTH,
