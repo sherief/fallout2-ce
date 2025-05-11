@@ -359,8 +359,6 @@ void _InitLoadSave()
     if (quickSaveSlots > 0 && quickSaveSlots <= saveLoadTotalSlots) {
         autoQuickSaveSlots = true;
     }
-
-    pipboyMessageListInit();
 }
 
 // 0x47B85C
@@ -2289,6 +2287,10 @@ static void _ShowSlotList(int windowType)
 
         fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * y + 55, _str, LS_WINDOW_WIDTH, LS_WINDOW_WIDTH, color);
         y += 2 * fontGetLineHeight() + 4;
+    }
+
+    if (gPipboyMessageList.entries == nullptr) {
+        pipboyMessageListInit();
     }
 
     // Pagination navigation
