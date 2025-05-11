@@ -490,13 +490,7 @@ int pipboyOpen(int intent)
 
 int pipboyMessageListInit()
 {
-    if (gPipboyMessageList.entries != nullptr) {
-        messageListFree(&gPipboyMessageList);
-    }
-
-    if (!messageListInit(&gPipboyMessageList)) {
-        return -1;
-    }
+    pipboyMessageListFree();
 
     char path[COMPAT_MAX_PATH];
     snprintf(path, sizeof(path), "%s%s", asc_5186C8, "pipboy.msg");
@@ -506,6 +500,14 @@ int pipboyMessageListInit()
     }
 
     return 0;
+}
+
+void pipboyMessageListFree()
+{
+    if (gPipboyMessageList.entries != nullptr) {
+        messageListFree(&gPipboyMessageList);
+    }
+    messageListInit(&gPipboyMessageList);
 }
 
 // 0x497228
@@ -728,7 +730,7 @@ static void pipboyWindowFree()
 
     windowDestroy(gPipboyWindow);
 
-    messageListFree(&gPipboyMessageList);
+    pipboyMessageListFree();
 
     // NOTE: Uninline.
     holodiskFree();
