@@ -2303,8 +2303,8 @@ static void _ShowSlotList(int windowType)
         int inactiveColor = _colorTable[8804];
 
         {
-            MessageListItem messageListItemBack = {201 , 0, nullptr, nullptr};
-            if (!messageListGetItem(&gPipboyMessageList, &messageListItemBack)){
+            MessageListItem messageListItemBack = { 201, 0, nullptr, nullptr };
+            if (!messageListGetItem(&gPipboyMessageList, &messageListItemBack)) {
                 debugPrint("Error: Couldn't find LoadSave Message!");
                 messageListItemBack.text = "BACK";
             }
@@ -2316,8 +2316,8 @@ static void _ShowSlotList(int windowType)
                 _currentSlotPage > 0 ? activeColor : inactiveColor);
         }
         {
-            MessageListItem messageListItemMore = {200 , 0, nullptr, nullptr};
-            if (!messageListGetItem(&gPipboyMessageList, &messageListItemMore)){
+            MessageListItem messageListItemMore = { 200, 0, nullptr, nullptr };
+            if (!messageListGetItem(&gPipboyMessageList, &messageListItemMore)) {
                 debugPrint("Error: Couldn't find LoadSave Message!");
                 messageListItemMore.text = "MORE";
             }
