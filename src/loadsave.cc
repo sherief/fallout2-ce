@@ -459,6 +459,8 @@ int lsgSaveGame(int mode)
         return -1;
     }
 
+    pipboyMessageListInit();
+
     if (_GetSlotList() == -1) {
         windowRefresh(gLoadSaveWindow);
 
@@ -939,6 +941,8 @@ int lsgSaveGame(int mode)
 
     lsgWindowFree(LOAD_SAVE_WINDOW_TYPE_SAVE_GAME);
 
+    pipboyMessageListFree();
+
     tileWindowRefresh();
 
     if (mode == LOAD_SAVE_MODE_QUICK) {
@@ -1080,6 +1084,8 @@ int lsgLoadGame(int mode)
         debugPrint("\nLOADSAVE: ** Error loading save game screen data! **\n");
         return -1;
     }
+
+    pipboyMessageListInit();
 
     if (_GetSlotList() == -1) {
         gameMouseSetCursor(MOUSE_CURSOR_ARROW);
@@ -1469,6 +1475,8 @@ int lsgLoadGame(int mode)
     lsgWindowFree(mode == LOAD_SAVE_MODE_FROM_MAIN_MENU
             ? LOAD_SAVE_WINDOW_TYPE_LOAD_GAME_FROM_MAIN_MENU
             : LOAD_SAVE_WINDOW_TYPE_LOAD_GAME);
+
+    pipboyMessageListFree();
 
     if (mode == LOAD_SAVE_MODE_QUICK) {
         if (rc == 1) {
@@ -2287,10 +2295,6 @@ static void _ShowSlotList(int windowType)
 
         fontDrawText(gLoadSaveWindowBuffer + LS_WINDOW_WIDTH * y + 55, _str, LS_WINDOW_WIDTH, LS_WINDOW_WIDTH, color);
         y += 2 * fontGetLineHeight() + 4;
-    }
-
-    if (gPipboyMessageList.entries == nullptr) {
-        pipboyMessageListInit();
     }
 
     // Pagination navigation
