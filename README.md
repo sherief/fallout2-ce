@@ -106,7 +106,7 @@ WINDOWED=1 ; 0 = fullscreen
 SCALE_2X=1 ; 0 = original scale, 1 = 2x
 
 [IFACE]
-IFACE_BAR_MODE, IFACE_BAR_SIDE_ART, IFACE_BAR_SIDES_ORI, IFACE_BAR_WIDTH supported (require assets in appropriate places
+IFACE_BAR_MODE, IFACE_BAR_SIDE_ART, IFACE_BAR_SIDES_ORI, IFACE_BAR_WIDTH supported (require assets in appropriate places)
 ```
 
 Recommendations:
