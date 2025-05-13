@@ -21,12 +21,12 @@
 #include "queue.h"
 #include "random.h"
 #include "settings.h"
+#include "sfall_config.h"
 #include "sound_effects_cache.h"
 #include "stat.h"
 #include "svga.h"
 #include "window_manager.h"
 #include "worldmap.h"
-#include "sfall_config.h"
 
 namespace fallout {
 
