@@ -1,14 +1,14 @@
 # Fallout 2 Community Edition
 
-Fallout 2 Community Edition is a fully working re-implementation of Fallout 2, with the same original gameplay, engine bugfixes, and some quality of life improvements, that works (mostly) hassle-free on multiple platforms.
+Fallout 2 Community Edition is a fully working re-implementation of Fallout 2, with the same original gameplay, engine bugfixes, and some quality of life improvements, that works (mostly) hassle-free on multiple platforms.  This is a fork of the original project, which isn't getting regular updates.
 
-Popular Fallout 2 total conversion mods are partially supported. Original versions of Nevada and Sonora (that do not rely on extended features provided by Sfall) likely work, although there is no complete walkthrough confirmation yet. [Fallout 2 Restoration Project](https://github.com/BGforgeNet/Fallout2_Restoration_Project), [Fallout Et Tu](https://github.com/rotators/Fo1in2) and [Olympus 2207](https://olympus2207.com) are not yet supported. Other mods (particularly Resurrection and Yesterday) are not tested.
+Popular Fallout 2 total conversion mods are partially supported. Original versions of Nevada and Sonora (that do not rely on extended features provided by Sfall) work. [Fallout 2 Restoration Project](https://github.com/BGforgeNet/Fallout2_Restoration_Project), [Fallout Et Tu](https://github.com/rotators/Fo1in2) and [Olympus 2207](https://olympus2207.com) are not yet supported. Other mods (particularly Resurrection and Yesterday) are not tested.
 
-There is also [Fallout Community Edition](https://github.com/alexbatalov/fallout1-ce).
+There is also [Fallout Community Edition](https://github.com/alexbatalov/fallout1-ce) (not affiliated with this fork).
 
 ## Installation
 
-You must own the game to play. Purchase your copy on [GOG](https://www.gog.com/game/fallout_2), [Epic Games](https://store.epicgames.com/p/fallout-2) or [Steam](https://store.steampowered.com/app/38410). Download latest [release](https://github.com/alexbatalov/fallout2-ce/releases) or build from source. You can also check latest [debug](https://github.com/alexbatalov/fallout2-ce/actions) build intended for testers.
+You must own the game to play. Purchase your copy on [GOG](https://www.gog.com/game/fallout_2), [Epic Games](https://store.epicgames.com/p/fallout-2) or [Steam](https://store.steampowered.com/app/38410). Download latest [release](https://github.com/fallout2-ce/fallout2-ce/releases) or build from source. 
 
 ### Windows
 
@@ -102,7 +102,11 @@ The second configuration file is `f2_res.ini`. Use it to change game window size
 [MAIN]
 SCR_WIDTH=1280
 SCR_HEIGHT=720
-WINDOWED=1
+WINDOWED=1 ; 0 = fullscreen
+SCALE_2X=1 ; 0 = original scale, 1 = 2x
+
+[IFACE]
+IFACE_BAR_MODE, IFACE_BAR_SIDE_ART, IFACE_BAR_SIDES_ORI, IFACE_BAR_WIDTH supported (require assets in appropriate places)
 ```
 
 Recommendations:
@@ -112,7 +116,10 @@ Recommendations:
 
 In time this stuff will receive in-game interface, right now you have to do it manually.
 
-The third configuration file is `ddraw.ini` (part of Sfall). There are dozens of options that adjust or override engine behaviour and gameplay mechanics. This file is intended for modders and advanced users. Currently only a small subset of these settings are actually implemented.
+The third configuration file is `ddraw.ini` (part of Sfall). There are dozens of options that adjust or override engine behaviour and gameplay mechanics. This file is intended for modders and advanced users. Currently only a small subset of these settings are actually implemented.  For high res configs, the following is recommended:
+```[Main]
+HiResMode=1
+```
 
 ## Contributing
 
