@@ -43,6 +43,7 @@
 #include "window_manager.h"
 #include "window_manager_private.h"
 #include "worldmap.h"
+#include "sfall_config.h"
 
 namespace fallout {
 
@@ -819,7 +820,11 @@ int mapLoadById(int map)
 static int mapLoad(File* stream)
 {
     _map_save_in_game(true);
-    backgroundSoundLoad("wind2", 12, 13, 16);
+    int gaplessMusic = 0;
+    configGetInt(&gSfallConfig, SFALL_CONFIG_MISC_KEY, SFALL_CONFIG_GAPLESS_MUSIC, &gaplessMusic);
+    if(!gaplessMusic) {
+        backgroundSoundLoad("wind2", 12, 13, 16);
+    }
     isoDisable();
     _partyMemberPrepLoad();
     _gmouse_disable_scrolling();
