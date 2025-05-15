@@ -3890,8 +3890,7 @@ int partyMemberCustomizationWindowInit()
             return -1;
         }
 
-        // changed index to index + 1 to catch all buttons (otherwise last missing sound)
-        buttonSetCallbacks(_gdialog_buttons[index + 1], _gsound_med_butt_press, _gsound_med_butt_release);
+        buttonSetCallbacks(_gdialog_buttons[optionButton], _gsound_med_butt_press, _gsound_med_butt_release);
     }
 
     _custom_current_selected[PARTY_MEMBER_CUSTOMIZATION_OPTION_AREA_ATTACK_MODE] = aiGetAreaAttackMode(gGameDialogSpeaker);
