@@ -5638,15 +5638,17 @@ static int inventoryQuantitySelect(int inventoryWindowType, Object* item, int ma
             return -1;
         }
 
-        if (keyCode == KEY_RETURN) {
+        if (keyCode == KEY_RETURN || keyCode == 500) {
             if (value >= min && value <= max) {
                 if (inventoryWindowType != INVENTORY_WINDOW_TYPE_SET_TIMER || value % 10 == 0) {
-                    soundPlayFile("ib1p1xx1");
-                    break;
+                    if (keyCode != 500) {
+                        soundPlayFile("ib1p1xx1");
+                    }
                 }
+            } else {
+                soundPlayFile("iisxxxx1");
             }
-
-            soundPlayFile("iisxxxx1");
+            break;
         } else if (keyCode == 5000) {
             isTyping = false;
             value = max;
@@ -5907,7 +5909,7 @@ static int inventoryQuantityWindowInit(int inventoryWindowType, Object* item)
             -1,
             -1,
             -1,
-            KEY_RETURN,
+            500,
             _moveFrmImages[4].getData(),
             _moveFrmImages[5].getData(),
             nullptr,
