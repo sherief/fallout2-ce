@@ -14,9 +14,6 @@ This folder contains scripts which can be used for sFall opcodes.
 
 4. This shoud create compiled script <file.int>
 
-## Build script using sFall
-
-1. TODO
 
 ## Run test script
 
