@@ -1,5 +1,8 @@
 #include "lib.arrays.h"
 
+// #include "define_lite.h"
+
+
 variable test_suite_errors := 0;
 variable test_suite_verbose := true;
 
@@ -29,6 +32,16 @@ end
 procedure array_test_suite begin
    variable arr, i, arr2, map, k, v, s;
    test_suite_errors := 0;
+
+   display_msg("Testing arrays_equal functions...");
+   call assertEquals("array_equals 1", arrays_equal([9, 7, 2, 1], [9, 7, 2, 1]), true);
+   call assertEquals("array_equals 2", arrays_equal([9, 7, 0, 1], [9, 7, 2, 1]), false);
+   call assertEquals("array_equals 3", arrays_equal([1, 1, 1, 1], [1, 1, 1]), false);
+   call assertEquals("array_equals 4", arrays_equal([], []), true);
+   call assertEquals("array_equals 5", arrays_equal({}, []), false);
+   call assertEquals("array_equals 6", arrays_equal({1: 1.0, 2: 2.0}, {1: 1.000, 2: 2.000}), true);
+   call assertEquals("array_equals 7", arrays_equal({"name": "John", "dept": 15.20}, {"name": "John"}), false);
+
 
    display_msg("Testing utility functions...");
    call assertEquals("strlen", strlen("testing"), 7);
@@ -177,16 +190,12 @@ procedure array_test_suite begin
 end
 
 
-procedure arrays_lib_tests begin
-   variable arr, i, arr2, map, k, v, s;
-   test_suite_errors := 0;
 
-   call assertEquals("array_equals 1", arrays_equal([9, 7, 2, 1], [9, 7, 2, 1]), true);
-   call assertEquals("array_equals 2", arrays_equal([9, 7, 0, 1], [9, 7, 2, 1]), false);
-   call assertEquals("array_equals 3", arrays_equal([1, 1, 1, 1], [1, 1, 1]), false);
-   call assertEquals("array_equals 4", arrays_equal([], []), true);
-   call assertEquals("array_equals 5", arrays_equal({}, []), false);
-   call assertEquals("array_equals 6", arrays_equal({1: 1.0, 2: 2.0}, {1: 1.000, 2: 2.000}), true);
-   call assertEquals("array_equals 7", arrays_equal({"name": "John", "dept": 15.20}, {"name": "John"}), false);
-   display_msg("All tests finished with "+test_suite_errors+" errors.");
+
+
+
+
+procedure map_enter_p_proc begin
+   display_msg("Starting tests");
+   call array_test_suite();
 end
