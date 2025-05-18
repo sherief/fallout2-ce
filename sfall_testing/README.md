@@ -30,3 +30,4 @@ This folder contains scripts which can be used for sFall opcodes.
 ## TODO
 
 - Use custom global script instead of `obj_dude`
+- Add note about compile.exe and https://marketplace.visualstudio.com/items?itemName=BGforge.bgforge-mls
