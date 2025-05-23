@@ -17,7 +17,7 @@ This folder contains scripts which can be used for sFall opcodes.
 
 ## Run test script
 
-1. Move compiled .int file into game folder as `mods/tests/SCRIPTS/OBJ_DUDE.INT` (case-sentisitive!)
+1. Move compiled .int file into game folder as `mods/tests/SCRIPTS/OBJ_DUDE.INT` (case-sensitive!)
 
 2. Change `mods/mods_order.txt` file: add a line `tests` there
 
