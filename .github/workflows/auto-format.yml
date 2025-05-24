@@ -1,30 +1,33 @@
 name: Auto Format with Clang
 
-on:
+on: 
+  workflow_dispatch:
   push:
     branches:
       - main
-
+  
 permissions:
   contents: write
 
 jobs:
   format:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        # with:
+        #    ref: ${{ github.head_ref }}
 
       - name: Run clang-format via Docker
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/app --workdir /app  \
             --user $(id -u):$(id -g) silkeh/clang:18 \
-            bash -c 'find src -type f -name \*.cc -o -name \*.h | xargs clang-format -i'
+            bash -c 'find src -type f \( -name "*.cc" -o -name "*.h" \) -print0 | xargs -0 clang-format -i'
 
-      # https://github.com/actions/checkout?tab=readme-ov-file#push-a-commit-using-the-built-in-token
+
+      # https://github.com/actions/checkout?tab=readme-ov-file#push-a-commit-to-a-pr-using-the-built-in-token
       - name: Check and commit changes if needed
         run: |
           git config user.name "github-actions[bot]"
