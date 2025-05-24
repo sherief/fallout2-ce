@@ -1,6 +1,10 @@
 name: Auto Format with Clang
 
 on: pull_request
+
+permissions:
+  contents: write
+
 jobs:
   format:
     if: >
@@ -21,13 +25,14 @@ jobs:
             --user $(id -u):$(id -g) silkeh/clang:18 \
             bash -c 'find src -type f -name \*.cc -o -name \*.h | xargs clang-format -i'
 
-      # https://github.com/actions/checkout?tab=readme-ov-file#push-a-commit-using-the-built-in-token
+      # https://github.com/actions/checkout?tab=readme-ov-file#push-a-commit-to-a-pr-using-the-built-in-token
       - name: Check and commit changes if needed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           if ! git diff --quiet; then
+            git diff
             git commit -am "chore: auto-format with clang-format"
             git push
           else

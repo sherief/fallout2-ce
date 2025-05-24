@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   format:
     if: github.actor != 'github-actions[bot]'
@@ -28,6 +31,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           if ! git diff --quiet; then
+            git diff
             git commit -am "chore: auto-format with clang-format"
             git push
           else
